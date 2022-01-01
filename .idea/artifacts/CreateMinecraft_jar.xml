@@ -1,6 +1,9 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="CreateMinecraft:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/CreateMinecraft_jar</output-path>
+    <properties id="ant-preprocessing">
+      <options enabled="true" />
+    </properties>
     <root id="archive" name="CreateMinecraft.jar">
       <element id="module-output" name="CreateMinecraft" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl.jar" path-in-jar="/" />
@@ -150,6 +153,7 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-remotery-natives-windows.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-rpmalloc-natives-windows.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/libs/lwjgl-libdivide-natives-windows.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
     </root>
   </artifact>
 </component>

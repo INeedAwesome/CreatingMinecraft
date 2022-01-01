@@ -1,6 +1,6 @@
 package site.gr8.mattis.creatingminecraft.settings;
 
-import site.gr8.mattis.creatingminecraft.core.util.Logger;
+import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,17 +13,11 @@ public class Settings {
 
     static String propFileName = "settings.properties";
     static String fileLocation = "resources/" + propFileName;
-    static int initialisations = 0;
 
     public Settings() {
-        initialisations++;
-        if (initialisations == 1) // fail safe
-            init();
-        else
-            logger.warn("Tried to initialize settings file twice(or more)! ");
     }
 
-    private static void init() {
+    public void init() {
         logger.info("Initializing settings file.");
         prop = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream(fileLocation)) {
