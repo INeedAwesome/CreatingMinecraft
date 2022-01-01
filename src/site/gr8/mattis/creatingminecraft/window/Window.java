@@ -4,11 +4,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import site.gr8.mattis.creatingminecraft.core.input.KeyboardInputCallback;
+import site.gr8.mattis.creatingminecraft.core.input.MouseButtonCallback;
+import site.gr8.mattis.creatingminecraft.core.input.MousePositionCallback;
+import site.gr8.mattis.creatingminecraft.core.input.MouseScrollCallback;
 import site.gr8.mattis.creatingminecraft.core.util.Logger;
-import site.gr8.mattis.creatingminecraft.input.KeyboardInputCallback;
-import site.gr8.mattis.creatingminecraft.input.MouseButtonCallback;
-import site.gr8.mattis.creatingminecraft.input.MousePositionCallback;
-import site.gr8.mattis.creatingminecraft.input.MouseScrollCallback;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
 
 
@@ -58,6 +58,7 @@ public class Window {
             return;
 
         GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        assert vidMode != null;
         GLFW.glfwSetWindowPos(windowID, (vidMode.width() - WIDTH) / 2, (vidMode.height() - HEIGHT) / 2);
 
         GLFW.glfwShowWindow(windowID);

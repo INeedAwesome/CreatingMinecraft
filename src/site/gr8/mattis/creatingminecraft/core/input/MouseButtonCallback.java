@@ -1,4 +1,4 @@
-package site.gr8.mattis.creatingminecraft.input;
+package site.gr8.mattis.creatingminecraft.core.input;
 
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
