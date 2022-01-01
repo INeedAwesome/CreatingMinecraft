@@ -29,12 +29,12 @@ public class Main {
         Renderer renderer = new Renderer();
 
         float[] vertices = {
-                -0.5f, 0.5f, 0f,
-                -0.5f, -0.5f, 0f,
-                0.5f, -0.5f, 0f,
-                0.5f, 0.5f, 0f,
+                -0.5f, 0.5f, 0,
+                -0.5f, -0.5f, 0,
+                0.5f, -0.5f, 0,
+                0.5f, 0.5f, 0
         };
-        int[] indices = {
+        int[] indices = { //  0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 0
                 0, 1, 3,
                 3, 1, 2
         };
@@ -51,6 +51,8 @@ public class Main {
                 Window.toggleFullscreen(Window.getWindowID());
                 LOGGER.info("F11");
             }
+            if (Input.isKeyDown(GLFW.GLFW_KEY_SPACE))
+                System.out.println("space");
 
             calcFps();
             GLX.flipFrame();
@@ -69,3 +71,16 @@ public class Main {
     }
 
 }
+
+    /*
+                -0.4f, 0.2f, 0,
+                -0.15f, 0.2f, 0,
+                0f, 0.6f, 0,
+                0.15f, 0.2f, 0,
+                0.4f, 0.2f, 0,
+                0.15f, -0.15f, 0,
+                0.2f, -0.6f, 0,
+                0f, -0.3f, 0,
+                -0.2f, -0.6f, 0,
+                -0.15f, -0.15f, 0,
+                                        */

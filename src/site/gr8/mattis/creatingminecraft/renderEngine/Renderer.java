@@ -3,13 +3,8 @@ package site.gr8.mattis.creatingminecraft.renderEngine;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import site.gr8.mattis.creatingminecraft.window.GLX;
 
 public class Renderer {
-
-    public void prepare() {
-        GLX.prepare();
-    }
 
     public void render(RawModel model) {
         GL30.glBindVertexArray(model.getVaoID());

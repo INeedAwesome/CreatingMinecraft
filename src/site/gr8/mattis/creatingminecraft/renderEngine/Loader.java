@@ -39,6 +39,7 @@ public class Loader {
         buffer.put(indices);
         buffer.flip();
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL11.glLineWidth(2);
     }
 
     private void storeDataInAttributeList(int attributeNumber, float[] data) {
