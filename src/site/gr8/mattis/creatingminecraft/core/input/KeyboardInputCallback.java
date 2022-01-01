@@ -3,7 +3,6 @@ package site.gr8.mattis.creatingminecraft.core.input;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-
 public class KeyboardInputCallback extends GLFWKeyCallback {
 
     private static boolean[] keys = new boolean[GLFW.GLFW_KEY_LAST];
@@ -17,5 +16,10 @@ public class KeyboardInputCallback extends GLFWKeyCallback {
         return keys[keycode];
     }
 
+    public static boolean isKeyPressed(int keycode) {
+        boolean isDown = keys[keycode];
+        keys[keycode] = false;
+        return isDown;
+    }
 
 }

@@ -4,8 +4,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import site.gr8.mattis.creatingminecraft.core.input.*;
-import site.gr8.mattis.creatingminecraft.core.util.Logger;
+import site.gr8.mattis.creatingminecraft.core.input.KeyboardInputCallback;
+import site.gr8.mattis.creatingminecraft.core.input.MouseButtonCallback;
+import site.gr8.mattis.creatingminecraft.core.input.MousePositionCallback;
+import site.gr8.mattis.creatingminecraft.core.input.MouseScrollCallback;
+import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
 
 
@@ -89,7 +92,6 @@ public class Window {
 
     private static void initializeCallbacks(long windowID) {
         GLFW.glfwSetKeyCallback(windowID, new KeyboardInputCallback());
-        GLFW.glfwSetCharCallback(windowID, new KeyCharCallback());
         GLFW.glfwSetCursorPosCallback(windowID, new MousePositionCallback());
         GLFW.glfwSetMouseButtonCallback(windowID, new MouseButtonCallback());
         GLFW.glfwSetScrollCallback(windowID, new MouseScrollCallback());

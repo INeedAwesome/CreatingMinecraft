@@ -2,15 +2,25 @@ package site.gr8.mattis.creatingminecraft.core.input;
 
 public class Input {
 
+    public static final int MOUSE_LEFT = 0;
+    public static final int MOUSE_RIGHT = 1;
+    public static final int MOUSE_MIDDLE = 2;
+    public static final int MOUSE_SIDE_BACK = 3;
+    public static final int MOUSE_SIDE_FORWARD = 4;
+
     public static boolean isKeyDown(int keycode) {
         return KeyboardInputCallback.isKeyDown(keycode);
-    } // key held
+    }
+
+    public static boolean isKeyPressed(int keycode) {
+        return KeyboardInputCallback.isKeyPressed(keycode);
+    }
 
     public static double isScrolling() {
         return MouseScrollCallback.getYoffset();
     }
 
-    public static boolean isMBDown(int keycode) {
+    public static boolean isMouseButtonDown(int keycode) {
         return MouseButtonCallback.isButtonDown(keycode);
     }
 
@@ -22,12 +32,11 @@ public class Input {
         return MousePositionCallback.getMouseDY();
     }
 
-    public static int getMouseDXRaw() {
+    public static int getMouseXPixel() {
         return MousePositionCallback.getRawX();
     }
 
-    public static int getMouseDYRaw() {
+    public static int getMouseYPixel() {
         return MousePositionCallback.getRawY();
     }
-
 }
