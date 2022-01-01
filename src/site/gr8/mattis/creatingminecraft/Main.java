@@ -39,6 +39,7 @@ public class Main {
                 3, 1, 2
         };
 
+
         RawModel model = loader.loadToVAO(vertices, indices);
 
         LOGGER.info("Initializing game loop!");
