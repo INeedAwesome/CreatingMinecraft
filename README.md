@@ -1,6 +1,12 @@
 # CreatingMinecraft
 initial commit
 
+This is a project about me (trying to) follow GamesWithGabes defenitive guide to creating minecraft. https://www.youtube.com/channel/UCQP4qSCj1eHMHisDDR4iPzw.
+
+Adding some extra stuff such as a custom logger and settings, used to make the user have some options. Such as FOV, fullscreen, gamma and vsync.
+I'm also planning to make another file to make the user experiment with variables usually constant in other programs, such as Z-NEAR and Z-FAR PLANE, and mayyyybe som variables in the shader. If so I'll have a file here on github to restore the shader. 
+
+
 The MIT License (MIT)
 
 Copyright (c) 2022 Mattis Kjellerås
