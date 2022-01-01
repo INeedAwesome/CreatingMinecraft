@@ -9,21 +9,21 @@ import java.util.Properties;
 public class AdditionalSettings {
 
     private static Properties prop;
-    private static final Logger logger = new Logger();
+    private static final Logger LOGGER = new Logger();
 
-    static String propFileName = "settings.properties";
+    static String propFileName = "additional.properties";
     static String fileLocation = "resources/" + propFileName;
 
     public AdditionalSettings() {
     }
 
     public void init() {
-        logger.info("Initializing settings file.");
+        LOGGER.info("Initializing additional settings. ");
         prop = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream(fileLocation)) {
             prop.load(fileInputStream);
         } catch (IOException exception) {
-            logger.error("Failed trying to read " + propFileName);
+            LOGGER.error("Failed trying to read " + propFileName);
         }
     }
 

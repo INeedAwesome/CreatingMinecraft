@@ -3,6 +3,7 @@ package site.gr8.mattis.creatingminecraft;
 import org.lwjgl.glfw.GLFW;
 import site.gr8.mattis.creatingminecraft.core.input.Input;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
+import site.gr8.mattis.creatingminecraft.core.shader.StaticShader;
 import site.gr8.mattis.creatingminecraft.core.util.GLX;
 import site.gr8.mattis.creatingminecraft.renderEngine.Loader;
 import site.gr8.mattis.creatingminecraft.renderEngine.RawModel;
@@ -13,19 +14,16 @@ import site.gr8.mattis.creatingminecraft.window.Window;
 
 public class Main {
 
-    private static Logger LOGGER;
-    private static Settings settings;
-    public static AdditionalSettings additionalSettings;
+    private static Logger LOGGER = new Logger();
+    private static Settings settings = new Settings();
+    public static AdditionalSettings additionalSettings = new AdditionalSettings();
 
     private static long lastTime = System.currentTimeMillis();
     private static int frames = 0;
 
 
     public static void main(String[] args) {
-        LOGGER = new Logger();
-        settings = new Settings();
         settings.init();
-        additionalSettings = new AdditionalSettings();
         additionalSettings.init();
         GLX.initGLFW();
         Window window = new Window(settings);
@@ -33,6 +31,7 @@ public class Main {
 
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
+        StaticShader shader = new StaticShader();
 
         float[] vertices = {
                 -0.5f, 0.5f, 0,
@@ -55,29 +54,29 @@ public class Main {
         while (!GLFW.glfwWindowShouldClose(Window.getWindowID())) {
             boolean canRender = false;
             double time_2 = (double) System.nanoTime() / (double) 1000000000L;
-            double passed = time_2 - time;
             unprocessed += (time_2 - time);
             time = time_2;
-            while (unprocessed >= frame_cap) {
+            while (unprocessed >= frame_cap) { // key presses
                 unprocessed -= frame_cap;
                 canRender = true;
-
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_F11)) {
                     Window.toggleFullscreen(Window.getWindowID());
                     LOGGER.info("F11");
                 }
-
             }
 
-            if (canRender) {
+            if (canRender) { // rendering stuff
                 GLX.prepare();
+                shader.start();
                 renderer.render(model);
 
+                shader.stop();
                 calcFps();
                 GLX.flipFrame();
             }
-
         }
+
+        shader.cleanUp();
         loader.cleanUp();
         Window.closeDisplay();
     }
