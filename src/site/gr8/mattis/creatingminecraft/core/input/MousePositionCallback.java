@@ -1,11 +1,8 @@
 package site.gr8.mattis.creatingminecraft.core.input;
 
 import org.lwjgl.glfw.GLFWCursorPosCallback;
-import site.gr8.mattis.creatingminecraft.core.util.Logger;
 
 public class MousePositionCallback extends GLFWCursorPosCallback {
-
-    private static final Logger LOGGER = new Logger();
 
     private static int mouseX;
     private static int mouseY;

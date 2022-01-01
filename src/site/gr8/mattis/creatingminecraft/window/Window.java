@@ -4,10 +4,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import site.gr8.mattis.creatingminecraft.core.input.KeyboardInputCallback;
-import site.gr8.mattis.creatingminecraft.core.input.MouseButtonCallback;
-import site.gr8.mattis.creatingminecraft.core.input.MousePositionCallback;
-import site.gr8.mattis.creatingminecraft.core.input.MouseScrollCallback;
+import site.gr8.mattis.creatingminecraft.core.input.*;
 import site.gr8.mattis.creatingminecraft.core.util.Logger;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
 
@@ -90,11 +87,12 @@ public class Window {
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
     }
 
-    private static void initializeCallbacks(long window) {
-        GLFW.glfwSetKeyCallback(window, new KeyboardInputCallback());
-        GLFW.glfwSetCursorPosCallback(window, new MousePositionCallback());
-        GLFW.glfwSetMouseButtonCallback(window, new MouseButtonCallback());
-        GLFW.glfwSetScrollCallback(window, new MouseScrollCallback());
+    private static void initializeCallbacks(long windowID) {
+        GLFW.glfwSetKeyCallback(windowID, new KeyboardInputCallback());
+        GLFW.glfwSetCharCallback(windowID, new KeyCharCallback());
+        GLFW.glfwSetCursorPosCallback(windowID, new MousePositionCallback());
+        GLFW.glfwSetMouseButtonCallback(windowID, new MouseButtonCallback());
+        GLFW.glfwSetScrollCallback(windowID, new MouseScrollCallback());
     }
 
     private static boolean nullCheck() {
