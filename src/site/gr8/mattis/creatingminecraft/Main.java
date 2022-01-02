@@ -47,27 +47,26 @@ public class Main {
 
         double frame_cap = 1.0 / Double.parseDouble(settings.getProperty("fps"));
 
-        double time = (double) System.nanoTime() / (double) 1000000000L;
+        double time = (double) System.nanoTime() / (double) 1_000_000_000L;
         double unprocessed = 0;
 
         LOGGER.info("Initializing game loop!");
-        while (!GLFW.glfwWindowShouldClose(Window.getWindowID())) {
+        while (!GLX.shouldClose()) {
             boolean canRender = false;
-            double time_2 = (double) System.nanoTime() / (double) 1000000000L;
+            double time_2 = (double) System.nanoTime() / (double) 1_000_000_000L;
             unprocessed += (time_2 - time);
             time = time_2;
             while (unprocessed >= frame_cap) { // key presses
                 unprocessed -= frame_cap;
                 canRender = true;
-                if (Input.isKeyPressed(GLFW.GLFW_KEY_F11)) {
+                if (Input.isKeyPressed(GLFW.GLFW_KEY_F11))
                     Window.toggleFullscreen(Window.getWindowID());
-                    LOGGER.info("F11");
-                }
             }
 
             if (canRender) { // rendering stuff
                 GLX.prepare();
                 shader.start();
+
                 renderer.render(model);
 
                 shader.stop();
