@@ -7,7 +7,7 @@ import site.gr8.mattis.creatingminecraft.window.Window;
 
 public class GLX {
 
-    private static Logger LOGGER = new Logger();
+    private static Logger LOGGER = Logger.get();
 
     public static void flipFrame() {
         GLFW.glfwPollEvents();

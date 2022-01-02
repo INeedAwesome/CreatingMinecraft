@@ -14,19 +14,15 @@ import site.gr8.mattis.creatingminecraft.window.Window;
 
 public class Main {
 
-    private static Logger LOGGER = new Logger();
-    private static Settings settings = new Settings();
-    public static AdditionalSettings additionalSettings = new AdditionalSettings();
-
-    private static long lastTime = System.currentTimeMillis();
-    private static int frames = 0;
-
+    private static Logger LOGGER = Logger.get();
+    private static final Settings settings = Settings.get();
+    private static final AdditionalSettings additionalSettings = AdditionalSettings.get();
 
     public static void main(String[] args) {
         settings.init();
         additionalSettings.init();
         GLX.initGLFW();
-        Window window = new Window(settings);
+        Window window = Window.get();
         window.createWindow();
 
         Loader loader = new Loader();
@@ -46,7 +42,6 @@ public class Main {
         RawModel model = loader.loadToVAO(vertices, indices);
 
         double frame_cap = 1.0 / Double.parseDouble(settings.getProperty("fps"));
-
         double time = (double) System.nanoTime() / (double) 1_000_000_000L;
         double unprocessed = 0;
 
@@ -66,11 +61,8 @@ public class Main {
             if (canRender) { // rendering stuff
                 GLX.prepare();
                 shader.start();
-
                 renderer.render(model);
-
                 shader.stop();
-                calcFps();
                 GLX.flipFrame();
             }
         }
@@ -79,27 +71,4 @@ public class Main {
         loader.cleanUp();
         Window.closeDisplay();
     }
-
-    private static void calcFps() {
-        frames++;
-        while (System.currentTimeMillis() >= lastTime + 1000L) {
-            LOGGER.info(frames + " fps ");
-            lastTime += 1000L;
-            frames = 0;
-        }
-    }
-
 }
-
-    /*
-                -0.4f, 0.2f, 0,
-                -0.15f, 0.2f, 0,
-                0f, 0.6f, 0,
-                0.15f, 0.2f, 0,
-                0.4f, 0.2f, 0,
-                0.15f, -0.15f, 0,
-                0.2f, -0.6f, 0,
-                0f, -0.3f, 0,
-                -0.2f, -0.6f, 0,
-                -0.15f, -0.15f, 0,
-                                        */

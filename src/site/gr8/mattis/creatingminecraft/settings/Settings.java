@@ -8,13 +8,22 @@ import java.util.Properties;
 
 public class Settings {
 
+    private static final Logger LOGGER = Logger.get();
+
+    private static String propFileName = "settings.properties";
+    private static String fileLocation = "resources/" + propFileName;
+
+    private static Settings settings = null;
     private static Properties prop;
-    private static final Logger LOGGER = new Logger();
 
-    static String propFileName = "settings.properties";
-    static String fileLocation = "resources/" + propFileName;
+    private Settings() {
+    }
 
-    public Settings() {
+    public static Settings get() {
+        if (Settings.settings == null) {
+            Settings.settings = new Settings();
+        }
+        return Settings.settings;
     }
 
     public void init() {

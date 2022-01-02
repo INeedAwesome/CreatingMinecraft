@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public abstract class ShaderProgram {
 
-    private static Logger LOGGER = new Logger();
+    private static Logger LOGGER = Logger.get();
 
     private int programID;
     private int vertexShaderID;
