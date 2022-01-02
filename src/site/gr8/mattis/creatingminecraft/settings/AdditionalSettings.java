@@ -9,12 +9,21 @@ import java.util.Properties;
 public class AdditionalSettings {
 
     private static Properties prop;
-    private static final Logger LOGGER = new Logger();
+    private static final Logger LOGGER = Logger.get();
 
     static String propFileName = "additional.properties";
     static String fileLocation = "resources/" + propFileName;
 
-    public AdditionalSettings() {
+    private static AdditionalSettings settings = null;
+
+    private AdditionalSettings() {
+    }
+
+    public static AdditionalSettings get() {
+        if (AdditionalSettings.settings == null) {
+            AdditionalSettings.settings = new AdditionalSettings();
+        }
+        return AdditionalSettings.settings;
     }
 
     public void init() {

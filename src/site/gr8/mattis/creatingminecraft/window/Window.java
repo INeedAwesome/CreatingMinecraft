@@ -15,20 +15,29 @@ import site.gr8.mattis.creatingminecraft.settings.Settings;
 public class Window {
 
 
-    private static final Logger LOGGER = new Logger();
-    private static Settings settings;
+    private static final Logger LOGGER = Logger.get();
+    private static Settings settings = Settings.get();
 
-    public static long windowID;
+    private static long windowID;
     public static int WIDTH = 1280;
     public static int HEIGHT = 720;
-    public static int maxWindowWidth = 1920;
-    public static int maxWindowHeight = 1080;
+    public static int MAX_WIDTH = 1920;
+    public static int MAX_HEIGHT = 1080;
     public static String windowTitle = "My Minecraft Clone";
+
     private static boolean fullscreen = false;
     private int initialisations;
 
-    public Window(Settings settings) {
-        Window.settings = settings;
+    private static Window window = null;
+
+    public Window() {
+    }
+
+    public static Window get() {
+        if (Window.window == null) {
+            Window.window = new Window();
+        }
+        return Window.window;
     }
 
     public static long getWindowID() {
@@ -48,8 +57,8 @@ public class Window {
         boolean isFullscreen = Boolean.parseBoolean(settings.getProperty("fullscreen"));
 
         windowID = GLFW.glfwCreateWindow(
-                isFullscreen ? maxWindowWidth : WIDTH,
-                isFullscreen ? maxWindowHeight : HEIGHT,
+                isFullscreen ? MAX_WIDTH : WIDTH,
+                isFullscreen ? MAX_HEIGHT : HEIGHT,
                 windowTitle,
                 isFullscreen ? GLFW.glfwGetPrimaryMonitor() : 0,
                 0);

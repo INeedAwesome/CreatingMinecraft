@@ -8,11 +8,18 @@ public class Logger {
     private static String date;
     static SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss.SSS");
 
-    public Logger() {
-        update();
+    private static Logger LOGGER;
+
+    private Logger() {    }
+
+    public static Logger get() {
+        if (Logger.LOGGER == null) {
+            Logger.LOGGER = new Logger();
+        }
+        return Logger.LOGGER;
     }
 
-    public static void update() {
+    private static void update() {
         String dateString = format.format(new Date());
         date = "[" + dateString + "] ";
     }
