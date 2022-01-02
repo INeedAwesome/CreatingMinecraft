@@ -27,4 +27,8 @@ public class GLX {
         }
     }
 
+    public static boolean shouldClose() {
+        return GLFW.glfwWindowShouldClose(Window.getWindowID());
+    }
+
 }
