@@ -1,6 +1,7 @@
 package site.gr8.mattis.creatingminecraft;
 
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 import site.gr8.mattis.creatingminecraft.core.input.Input;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 import site.gr8.mattis.creatingminecraft.core.shader.StaticShader;
@@ -12,18 +13,19 @@ import site.gr8.mattis.creatingminecraft.settings.AdditionalSettings;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
 import site.gr8.mattis.creatingminecraft.window.Window;
 
+
 public class Main {
 
-    private static Logger LOGGER = Logger.get();
+    private static final Logger LOGGER = Logger.get();
     private static final Settings settings = Settings.get();
     private static final AdditionalSettings additionalSettings = AdditionalSettings.get();
 
     public static void main(String[] args) {
         settings.init();
-        additionalSettings.init();
         GLX.initGLFW();
         Window window = Window.get();
         window.createWindow();
+        additionalSettings.init();
 
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
@@ -39,7 +41,15 @@ public class Main {
                 0, 1, 3,
                 3, 1, 2
         };
-        RawModel model = loader.loadToVAO(vertices, indices);
+        float[] colours = new float[]{ // rgb values
+                0.5f, 0.0f, 0.0f,
+                1.0f, 0.5f, 1.0f,
+                0.9f, 0.16f, 0.5f,
+                0.2f, 0.5f, 0.5f,
+        };
+        RawModel model = loader.loadToVAO(vertices, colours, indices);
+
+        boolean wireFrame = false;
 
         double frame_cap = 1.0 / Double.parseDouble(settings.getProperty("fps"));
         double time = (double) System.nanoTime() / (double) 1_000_000_000L;
@@ -56,6 +66,14 @@ public class Main {
                 canRender = true;
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_F11))
                     Window.toggleFullscreen(Window.getWindowID());
+                if (Input.isKeyPressed(GLFW.GLFW_KEY_F1))
+                    if (!wireFrame) {
+                        wireFrame = true;
+                        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+                    } else {
+                        wireFrame = false;
+                        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+                    }
             }
 
             if (canRender) { // rendering stuff
