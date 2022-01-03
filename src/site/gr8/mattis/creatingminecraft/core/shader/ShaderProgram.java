@@ -1,16 +1,22 @@
 package site.gr8.mattis.creatingminecraft.core.shader;
 
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.system.MemoryStack;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
 public abstract class ShaderProgram {
 
     private static final Logger LOGGER = Logger.get();
+
+    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     private int programID;
     private int vertexShaderID;
@@ -25,7 +31,24 @@ public abstract class ShaderProgram {
         GL20.glLinkProgram(programID);
         GL20.glValidateProgram(programID);
         bindAttributes();
+        getAllUniformLocations();
         LOGGER.info("Shader created and bound!");
+    }
+
+    protected abstract void getAllUniformLocations();
+
+    protected abstract void bindAttributes();
+
+    protected int getUniformLocation(String uniformName) {
+        return GL20.glGetUniformLocation(programID, uniformName);
+    }
+
+    protected void loadMatrix(int location, Matrix4f matrix4f) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(16);
+            matrix4f.get(fb);
+            GL20.glUniformMatrix4fv(location, false, fb);
+        }
     }
 
     public void start() {
@@ -46,7 +69,6 @@ public abstract class ShaderProgram {
         LOGGER.info("Shader detached!");
     }
 
-    protected abstract void bindAttributes();
 
     protected void bindAttribute(int attribute, String variableName) {
         GL20.glBindAttribLocation(programID, attribute, variableName);
@@ -62,7 +84,7 @@ public abstract class ShaderProgram {
                 shaderSource.append(line).append("\n");
             }
             reader.close();
-        }catch (IOException exception) {
+        } catch (IOException exception) {
             LOGGER.error("Could not read file!");
             exception.printStackTrace();
             System.exit(-1);

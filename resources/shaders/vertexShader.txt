@@ -6,11 +6,11 @@ in vec3 color;
 
 out vec3 colour;
 
+uniform mat4 projectionMatrix;
+
 void main(void) {
 
-    gl_Position = vec4(position, 1);
-    colour = vec3(position.x + 0.5, 0.5, position.y + 0.8);
+    gl_Position = projectionMatrix * vec4(position, 1);
     colour = color;
-    // to use the vec3 func remove the line above this.
 
 }

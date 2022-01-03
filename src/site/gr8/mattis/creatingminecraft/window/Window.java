@@ -23,7 +23,7 @@ public class Window {
     public static int HEIGHT = 720;
     public static int MAX_WIDTH = 1920;
     public static int MAX_HEIGHT = 1080;
-    public static String windowTitle = "My Minecraft Clone";
+    public static String TITLE = "My Minecraft Clone";
 
     private static boolean fullscreen = false;
     private int initialisations;
@@ -52,7 +52,6 @@ public class Window {
         }
 
         LOGGER.info("Creating window!");
-
         setWindowHints();
         boolean isFullscreen = Boolean.parseBoolean(settings.getProperty("fullscreen"));
         fullscreen = isFullscreen;
@@ -60,23 +59,19 @@ public class Window {
         windowID = GLFW.glfwCreateWindow(
                 isFullscreen ? MAX_WIDTH : WIDTH,
                 isFullscreen ? MAX_HEIGHT : HEIGHT,
-                windowTitle,
+                TITLE,
                 isFullscreen ? GLFW.glfwGetPrimaryMonitor() : 0,
                 0);
 
         if (!nullCheck())
             return;
-
         centerWindow();
-
-        GLFW.glfwShowWindow(windowID);
-
         GLFW.glfwMakeContextCurrent(windowID);
         GL.createCapabilities();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_CULL_FACE);
-
         initializeCallbacks(windowID);
+        GLFW.glfwShowWindow(windowID);
 
         if (Boolean.parseBoolean(settings.getProperty("vsync")))
             GLFW.glfwSwapInterval(1);
@@ -121,18 +116,20 @@ public class Window {
         return true;
     }
 
-    public static void toggleFullscreen(long window) {
+    public static void toggleFullscreen() {
         if (fullscreen) {
-            GLFW.glfwSetWindowMonitor(window, 0, 1, 30, 1280, 720, 60);
+            GLFW.glfwSetWindowMonitor(windowID, 0, 1, 30, 1280, 720, 60);
             centerWindow();
             fullscreen = false;
-
-        } else {
-            GLFW.glfwSetWindowMonitor(window, GLFW.glfwGetPrimaryMonitor(), 0, 0, MAX_WIDTH, MAX_HEIGHT, 60);
+        }
+        else {
+            GLFW.glfwSetWindowMonitor(windowID, GLFW.glfwGetPrimaryMonitor(), 0, 0, MAX_WIDTH, MAX_HEIGHT, 60);
             fullscreen = true;
 
         }
     }
 
-
+    public static boolean isFullscreen() {
+        return fullscreen;
+    }
 }
