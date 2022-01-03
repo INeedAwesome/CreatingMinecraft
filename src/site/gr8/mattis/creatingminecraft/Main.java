@@ -32,10 +32,10 @@ public class Main {
         StaticShader shader = new StaticShader();
 
         float[] vertices = {
-                -0.5f, 0.5f, 0,
-                -0.5f, -0.5f, 0,
-                0.5f, -0.5f, 0,
-                0.5f, 0.5f, 0
+                -0.5f, 0.5f, -1.05f,
+                -0.5f, -0.5f, -1.05f,
+                0.5f, -0.5f, -1.05f,
+                0.5f, 0.5f, -1.05f
         };
         int[] indices = { //  0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 0
                 0, 1, 3,
@@ -65,7 +65,7 @@ public class Main {
                 unprocessed -= frame_cap;
                 canRender = true;
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_F11))
-                    Window.toggleFullscreen(Window.getWindowID());
+                    Window.toggleFullscreen();
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_F1))
                     if (!wireFrame) {
                         wireFrame = true;
@@ -79,7 +79,7 @@ public class Main {
             if (canRender) { // rendering stuff
                 GLX.prepare();
                 shader.start();
-                renderer.render(model);
+                renderer.render(model, shader);
                 shader.stop();
                 GLX.flipFrame();
             }

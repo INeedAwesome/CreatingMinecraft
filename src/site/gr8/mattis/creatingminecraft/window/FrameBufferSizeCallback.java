@@ -16,10 +16,14 @@ public class FrameBufferSizeCallback extends GLFWFramebufferSizeCallback {
     }
 
     public static int getCurrentWidth() {
+        if (CURRENT_WIDTH == 0)
+            return Window.isFullscreen() ? Window.MAX_WIDTH : Window.WIDTH;
         return CURRENT_WIDTH;
     }
 
     public static int getCurrentHeight() {
+        if (CURRENT_HEIGHT == 0)
+            return Window.isFullscreen() ? Window.MAX_HEIGHT : Window.HEIGHT;
         return CURRENT_HEIGHT;
     }
 }
