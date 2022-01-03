@@ -1,6 +1,6 @@
 # Creating Minecraft
 
-This is a project about me (trying to) follow GamesWithGabes defenitive guide to creating minecraft. https://www.youtube.com/channel/UCQP4qSCj1eHMHisDDR4iPzw.
+This is a project about me (trying to) follow [GamesWithGabe's](https://www.youtube.com/channel/UCQP4qSCj1eHMHisDDR4iPzw.) defenitive guide to creating minecraft. 
 
 The big difference is that im using Java and he's using C++. Im not that familiar with C++ so I decided to use Java instead. 
 Im not really "copying", instead, he's showing some common OpenGL fuctions to make the program and I learn the functions in Java. 
