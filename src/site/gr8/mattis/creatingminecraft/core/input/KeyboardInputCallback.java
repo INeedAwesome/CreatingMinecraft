@@ -20,6 +20,10 @@ public class KeyboardInputCallback extends GLFWKeyCallback {
         boolean isDown = keys[keycode];
         keys[keycode] = false;
         return isDown;
+        //
+        // Thanks to illuminator3#0001 on discord for helping me with this,
+        // in discord server Together Java in #frameworks_help_0, 2022.01.01
+
     }
 
 }

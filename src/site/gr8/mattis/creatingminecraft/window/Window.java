@@ -16,7 +16,7 @@ public class Window {
 
 
     private static final Logger LOGGER = Logger.get();
-    private static Settings settings = Settings.get();
+    private static final Settings settings = Settings.get();
 
     private static long windowID;
     public static int WIDTH = 1280;
@@ -55,6 +55,7 @@ public class Window {
 
         setWindowHints();
         boolean isFullscreen = Boolean.parseBoolean(settings.getProperty("fullscreen"));
+        fullscreen = isFullscreen;
 
         windowID = GLFW.glfwCreateWindow(
                 isFullscreen ? MAX_WIDTH : WIDTH,
@@ -66,9 +67,7 @@ public class Window {
         if (!nullCheck())
             return;
 
-        GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-        assert vidMode != null;
-        GLFW.glfwSetWindowPos(windowID, (vidMode.width() - WIDTH) / 2, (vidMode.height() - HEIGHT) / 2);
+        centerWindow();
 
         GLFW.glfwShowWindow(windowID);
 
@@ -84,6 +83,12 @@ public class Window {
         else
             GLFW.glfwSwapInterval(0);
 
+    }
+
+    private static void centerWindow() {
+        GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        assert vidMode != null;
+        GLFW.glfwSetWindowPos(windowID, (vidMode.width() - WIDTH) / 2, (vidMode.height() - HEIGHT) / 2);
     }
 
     public static void closeDisplay() {
@@ -104,6 +109,7 @@ public class Window {
         GLFW.glfwSetCursorPosCallback(windowID, new MousePositionCallback());
         GLFW.glfwSetMouseButtonCallback(windowID, new MouseButtonCallback());
         GLFW.glfwSetScrollCallback(windowID, new MouseScrollCallback());
+        GLFW.glfwSetFramebufferSizeCallback(windowID, new FrameBufferSizeCallback());
     }
 
     private static boolean nullCheck() {
@@ -117,11 +123,14 @@ public class Window {
 
     public static void toggleFullscreen(long window) {
         if (fullscreen) {
-            GLFW.glfwSetWindowMonitor(window, GLFW.glfwGetPrimaryMonitor(), 0, 0, 1920, 1080, 165);
-            fullscreen = false;
-        } else {
             GLFW.glfwSetWindowMonitor(window, 0, 1, 30, 1280, 720, 60);
+            centerWindow();
+            fullscreen = false;
+
+        } else {
+            GLFW.glfwSetWindowMonitor(window, GLFW.glfwGetPrimaryMonitor(), 0, 0, MAX_WIDTH, MAX_HEIGHT, 60);
             fullscreen = true;
+
         }
     }
 

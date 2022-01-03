@@ -2,6 +2,7 @@ package site.gr8.mattis.creatingminecraft.core.util;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import site.gr8.mattis.creatingminecraft.core.input.Input;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 import site.gr8.mattis.creatingminecraft.window.Window;
 
@@ -28,7 +29,14 @@ public class GLX {
     }
 
     public static boolean shouldClose() {
+        if (checkEscape()) {
+            return true;
+        }
         return GLFW.glfwWindowShouldClose(Window.getWindowID());
+    }
+
+    public static boolean checkEscape() {
+        return Input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE);
     }
 
 }

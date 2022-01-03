@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -13,13 +14,16 @@ import java.util.List;
 
 public class Loader {
 
+    private static final Logger LOGGER = Logger.get();
+
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
 
-    public RawModel loadToVAO(float[] positions, int[] indices) {
+    public RawModel loadToVAO(float[] positions, float[] colours, int[] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
         storeDataInAttributeList(0, positions);
+        storeDataInAttributeList(1, colours);
         unbindVAO();
         return new RawModel(vaoID, indices.length);
     }
@@ -28,6 +32,7 @@ public class Loader {
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
         GL30.glBindVertexArray(vaoID);
+        LOGGER.info("Created and bound VAO!");
         return vaoID;
     }
 
@@ -39,7 +44,7 @@ public class Loader {
         buffer.put(indices);
         buffer.flip();
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-        GL11.glLineWidth(2);
+        LOGGER.info("Bound indices buffer. ");
     }
 
     private void storeDataInAttributeList(int attributeNumber, float[] data) {

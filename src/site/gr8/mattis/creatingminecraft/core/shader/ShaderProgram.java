@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public abstract class ShaderProgram {
 
-    private static Logger LOGGER = Logger.get();
+    private static final Logger LOGGER = Logger.get();
 
     private int programID;
     private int vertexShaderID;
@@ -25,6 +25,7 @@ public abstract class ShaderProgram {
         GL20.glLinkProgram(programID);
         GL20.glValidateProgram(programID);
         bindAttributes();
+        LOGGER.info("Shader created and bound!");
     }
 
     public void start() {
@@ -42,9 +43,8 @@ public abstract class ShaderProgram {
         GL20.glDeleteShader(vertexShaderID);
         GL20.glDeleteShader(fragmentShaderID);
         GL20.glDeleteProgram(programID);
+        LOGGER.info("Shader detached!");
     }
-
-
 
     protected abstract void bindAttributes();
 
