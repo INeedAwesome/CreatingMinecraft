@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import site.gr8.mattis.creatingminecraft.core.input.Input;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 import site.gr8.mattis.creatingminecraft.core.shader.StaticShader;
+import site.gr8.mattis.creatingminecraft.core.sound.Sounds;
 import site.gr8.mattis.creatingminecraft.core.util.GLX;
 import site.gr8.mattis.creatingminecraft.renderEngine.Loader;
 import site.gr8.mattis.creatingminecraft.renderEngine.RawModel;
@@ -12,7 +13,6 @@ import site.gr8.mattis.creatingminecraft.renderEngine.Renderer;
 import site.gr8.mattis.creatingminecraft.settings.AdditionalSettings;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
 import site.gr8.mattis.creatingminecraft.window.Window;
-
 
 public class Main {
 
@@ -23,6 +23,8 @@ public class Main {
     public static void main(String[] args) {
         settings.init();
         GLX.initGLFW();
+        Sounds sounds = Sounds.get();
+        sounds.playSound(1, false);
         Window window = Window.get();
         window.createWindow();
         additionalSettings.init();
@@ -55,6 +57,7 @@ public class Main {
         double time = (double) System.nanoTime() / (double) 1_000_000_000L;
         double unprocessed = 0;
 
+
         LOGGER.info("Initializing game loop!");
         while (!GLX.shouldClose()) {
             boolean canRender = false;
@@ -74,6 +77,8 @@ public class Main {
                         wireFrame = false;
                         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
                     }
+                if (Input.isKeyPressed(GLFW.GLFW_KEY_1))
+                    sounds.playSound(0, false);
             }
 
             if (canRender) { // rendering stuff
@@ -84,7 +89,6 @@ public class Main {
                 GLX.flipFrame();
             }
         }
-
         shader.cleanUp();
         loader.cleanUp();
         Window.closeDisplay();
