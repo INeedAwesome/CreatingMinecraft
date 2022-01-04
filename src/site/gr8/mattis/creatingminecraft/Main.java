@@ -2,10 +2,11 @@ package site.gr8.mattis.creatingminecraft;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import site.gr8.mattis.creatingminecraft.core.audio.AudioMaster;
+import site.gr8.mattis.creatingminecraft.core.audio.Source;
 import site.gr8.mattis.creatingminecraft.core.input.Input;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 import site.gr8.mattis.creatingminecraft.core.shader.StaticShader;
-import site.gr8.mattis.creatingminecraft.core.sound.Sounds;
 import site.gr8.mattis.creatingminecraft.core.util.GLX;
 import site.gr8.mattis.creatingminecraft.renderEngine.Loader;
 import site.gr8.mattis.creatingminecraft.renderEngine.RawModel;
@@ -14,24 +15,39 @@ import site.gr8.mattis.creatingminecraft.settings.AdditionalSettings;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
 import site.gr8.mattis.creatingminecraft.window.Window;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 
     private static final Logger LOGGER = Logger.get();
     private static final Settings settings = Settings.get();
     private static final AdditionalSettings additionalSettings = AdditionalSettings.get();
 
+    private static List<Integer> sounds = new ArrayList<>();
+
     public static void main(String[] args) {
         settings.init();
         GLX.initGLFW();
-        Sounds sounds = Sounds.get();
-        sounds.playSound(1, false);
+
+        AudioMaster.init();
+        AudioMaster.setListenerData();
+
         Window window = Window.get();
         window.createWindow();
         additionalSettings.init();
 
+        int sound = AudioMaster.loadSound("resources/new.ogg");
+        int sound2 = AudioMaster.loadSound("resources/filewav.ogg");
+        sounds.add(sound);
+        sounds.add(sound2);
+        LOGGER.warn("If you hear a screeching in the sound contact the creator @ http://mattis.gr8.site");
+        Source source = new Source();
+
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
         StaticShader shader = new StaticShader();
+
 
         float[] vertices = {
                 -0.5f, 0.5f, -1.05f,
@@ -78,7 +94,9 @@ public class Main {
                         GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
                     }
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_1))
-                    sounds.playSound(0, false);
+                    source.play(sound2);
+                if (Input.isKeyPressed(GLFW.GLFW_KEY_2))
+                    source.play(sound);
             }
 
             if (canRender) { // rendering stuff
@@ -89,6 +107,8 @@ public class Main {
                 GLX.flipFrame();
             }
         }
+
+        AudioMaster.cleanUp();
         shader.cleanUp();
         loader.cleanUp();
         Window.closeDisplay();
