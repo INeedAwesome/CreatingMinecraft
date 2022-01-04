@@ -23,7 +23,7 @@ public class Window {
     public static int HEIGHT = 720;
     public static int MAX_WIDTH = 1920;
     public static int MAX_HEIGHT = 1080;
-    public static String TITLE = "My Minecraft Clone";
+    public static String TITLE = "Shit knas";
 
     private static boolean fullscreen = false;
     private int initialisations;
