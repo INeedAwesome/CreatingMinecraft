@@ -1,6 +1,7 @@
 package site.gr8.mattis.creatingminecraft.core.audio;
 
 import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
 
 public class Source {
 
@@ -8,6 +9,10 @@ public class Source {
 
     public Source() {
         sourceID = AL10.alGenSources();
+        AL10.alDistanceModel(AL11.AL_EXPONENT_DISTANCE);
+        AL10.alSourcef(sourceID, AL10.AL_REFERENCE_DISTANCE, 2);
+        AL10.alSourcef(sourceID, AL10.AL_ROLLOFF_FACTOR, 4);
+        AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, 15);
     }
 
     public void pause() {

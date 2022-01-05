@@ -26,12 +26,14 @@ public class Main {
 
     private static List<Integer> sounds = new ArrayList<>();
 
+    private static float x = -16, y = 0, z = 0;
+
     public static void main(String[] args) {
         settings.init();
         GLX.initGLFW();
 
         AudioMaster.init();
-        AudioMaster.setListenerData();
+        AudioMaster.setListenerData(0, 0, 2);
 
         Window window = Window.get();
         window.createWindow();
@@ -43,6 +45,7 @@ public class Main {
         sounds.add(sound2);
         LOGGER.warn("If you hear a screeching in the sound contact the creator @ http://mattis.gr8.site");
         Source source = new Source();
+        source.setPosition(0, 0, 0);
 
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
@@ -97,9 +100,16 @@ public class Main {
                     source.play(sound2);
                 if (Input.isKeyPressed(GLFW.GLFW_KEY_2))
                     source.play(sound);
+                if (Input.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
+                    if (source.isPlaying())
+                        source.pause();
+                    else source.continuePlaying();
+                }
             }
 
             if (canRender) { // rendering stuff
+                source.setPosition(x += 0.03f, y, z);
+                LOGGER.info(x);
                 GLX.prepare();
                 shader.start();
                 renderer.render(model, shader);
