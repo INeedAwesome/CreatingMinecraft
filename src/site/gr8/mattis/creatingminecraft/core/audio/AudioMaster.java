@@ -12,13 +12,14 @@ import java.util.List;
 
 public class AudioMaster {
 
-    private static Logger LOGGER = Logger.get();
+    private static final Logger LOGGER = Logger.get();
     private static List<Integer> buffers = new ArrayList<>();
 
     private static long context;
     private static long device;
 
     public static void init() {
+        LOGGER.info("Initializing OpenAL!");
         device = ALC10.alcOpenDevice((ByteBuffer) null);
         if (device == 0)
             throw new IllegalStateException("Failed to open an openAL device!");
@@ -46,7 +47,7 @@ public class AudioMaster {
         buffers.add(buffer);
         try (STBVorbisInfo info = STBVorbisInfo.malloc()) {
             ShortBuffer pcm = ALCUtils.readVorbis(file, 32 * 1024, info);
-            AL10.alBufferData(buffer, AL10.AL_FORMAT_MONO16, pcm, info.sample_rate());
+            AL10.alBufferData(buffer, info.channels() == 1 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16, pcm, info.sample_rate());
         }
         return buffer;
     }

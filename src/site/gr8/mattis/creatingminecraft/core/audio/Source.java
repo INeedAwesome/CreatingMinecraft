@@ -30,8 +30,17 @@ public class Source {
     public void play(int buffer) {
         stop();
         AL10.alSourcei(sourceID, AL10.AL_BUFFER, buffer);
+        AL10.alSourcef(sourceID, AL10.AL_PITCH, 1);
         AL10.alSourcePlay(sourceID);
     }
+
+    public void play(int buffer, float pitch) {
+        stop();
+        AL10.alSourcei(sourceID, AL10.AL_BUFFER, buffer);
+        AL10.alSourcef(sourceID, AL10.AL_PITCH, pitch);
+        AL10.alSourcePlay(sourceID);
+    }
+
     public void delete() {
         stop();
         AL10.alDeleteSources(sourceID);

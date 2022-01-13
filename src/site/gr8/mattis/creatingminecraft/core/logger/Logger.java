@@ -24,6 +24,10 @@ public class Logger {
         date = "[" + dateString + "] ";
     }
 
+    public void logLine() {
+        System.out.println();
+    }
+
     public void info(Object s) {
         update();
         System.out.println(date + s + Colors.ANSI_RESET);
