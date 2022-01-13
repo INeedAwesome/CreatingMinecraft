@@ -14,7 +14,6 @@ import site.gr8.mattis.creatingminecraft.settings.Settings;
 
 public class Window {
 
-
     private static final Logger LOGGER = Logger.get();
     private static final Settings settings = Settings.get();
 
@@ -23,7 +22,7 @@ public class Window {
     public static int HEIGHT = 720;
     public static int MAX_WIDTH = 1920;
     public static int MAX_HEIGHT = 1080;
-    public static String TITLE = "Shit knas";
+    public static String TITLE = "Shit knas v" + settings.getProperty("app.version");
 
     private static boolean fullscreen = false;
     private int initialisations;
@@ -69,7 +68,7 @@ public class Window {
         GLFW.glfwMakeContextCurrent(windowID);
         GL.createCapabilities();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_CULL_FACE);
+        //GL11.glEnable(GL11.GL_CULL_FACE);
         initializeCallbacks(windowID);
         GLFW.glfwShowWindow(windowID);
 
@@ -123,7 +122,8 @@ public class Window {
             fullscreen = false;
         }
         else {
-            GLFW.glfwSetWindowMonitor(windowID, GLFW.glfwGetPrimaryMonitor(), 0, 0, MAX_WIDTH, MAX_HEIGHT, 60);
+            GLFW.glfwSetWindowMonitor(windowID, GLFW.glfwGetPrimaryMonitor(), 0, 0, MAX_WIDTH, MAX_HEIGHT, 165);
+            GLFW.glfwSwapInterval(1);
             fullscreen = true;
 
         }
