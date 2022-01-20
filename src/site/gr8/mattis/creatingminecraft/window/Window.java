@@ -68,7 +68,8 @@ public class Window {
         GLFW.glfwMakeContextCurrent(windowID);
         GL.createCapabilities();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        //GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_BLEND);
         initializeCallbacks(windowID);
         GLFW.glfwShowWindow(windowID);
 

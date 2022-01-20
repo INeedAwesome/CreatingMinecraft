@@ -12,8 +12,7 @@ import site.gr8.mattis.creatingminecraft.window.FrameBufferSizeCallback;
 
 public class Camera {
 
-    private static final Logger LOGGER = Logger.get();
-
+    Logger LOGGER = Logger.get();
     Settings settings = Settings.get();
     AdditionalSettings ad = AdditionalSettings.get();
 
@@ -63,14 +62,14 @@ public class Camera {
     }
 
     public void moveForwardOrBack(boolean forward) {
-        float z = Math.sin(Math.toRadians(getYaw())) * playerSpeed;
-        float y = Math.cos(Math.toRadians(getYaw())) * playerSpeed;
+        float x = Math.sin(Math.toRadians(getYaw())) * playerSpeed;
+        float z = Math.cos(Math.toRadians(getYaw())) * playerSpeed;
         if (forward) {
-            position.z -= y;
-            position.x += z;
+            position.z -= z;
+            position.x += x;
         } else {
-            position.z += y;
-            position.x -= z;
+            position.z += z;
+            position.x -= x;
         }
     }
 
@@ -95,7 +94,8 @@ public class Camera {
         Matrix4f viewMatrix = new Matrix4f();
         viewMatrix.identity();
         viewMatrix.rotate(Math.toRadians(getPitch()), new Vector3f(1, 0, 0), viewMatrix);
-        viewMatrix.rotate(Math.toRadians(getYaw()), new Vector3f(0, 1, 0), viewMatrix);
+        viewMatrix.rotate(Math.toRadians(getYaw()),   new Vector3f(0, 1, 0), viewMatrix);
+        viewMatrix.rotate(Math.toRadians(getRoll()),  new Vector3f(0, 0, 1), viewMatrix);
         Vector3f cameraPos = getPosition();
         Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         viewMatrix.translate(negativeCameraPos, viewMatrix);
