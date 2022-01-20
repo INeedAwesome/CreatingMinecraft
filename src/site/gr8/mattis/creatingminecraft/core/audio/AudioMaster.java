@@ -1,5 +1,6 @@
 package site.gr8.mattis.creatingminecraft.core.audio;
 
+import org.joml.Vector3f;
 import org.lwjgl.openal.*;
 import org.lwjgl.stb.STBVorbisInfo;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
@@ -37,9 +38,20 @@ public class AudioMaster {
         AL.createCapabilities(deviceCaps);
     }
 
-    public static void setListenerData(float x, float y, float z) {
+    public static void setListenerPosition(float x, float y, float z) {
         AL10.alListener3f(AL10.AL_POSITION, x, y, z);
-        AL10.alListener3f(AL10.AL_VELOCITY, 0, 0, 0);
+    }
+
+    public static void setListenerPosition(Vector3f vector) {
+        AL10.alListener3f(AL10.AL_POSITION, vector.x, vector.y, vector.z);
+    }
+
+    public static void setOrientation(float x, float y, float z) {
+        AL10.alListener3f(AL10.AL_ORIENTATION, x, y, z);
+    }
+
+    public static void setOrientation(Vector3f vector) {
+        AL10.alListener3f(AL10.AL_ORIENTATION, vector.x, vector.y, vector.z);
     }
 
     public static int loadSound(String file) {

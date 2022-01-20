@@ -9,12 +9,6 @@ public class MousePositionCallback extends GLFWCursorPosCallback {
     private static int mouseDX;
     private static int mouseDY;
 
-    /*
-    This class calculates the pixels moved each frame
-    taking the delta xpos - mouseX which initially is 0,
-    and becomes bigger as the mouse goes farther from coordinate 0, 0.
-     */
-
     @Override
     public void invoke(long window, double xpos, double ypos) {
         mouseDX += (int) xpos - mouseX;

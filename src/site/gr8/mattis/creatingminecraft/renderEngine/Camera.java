@@ -12,8 +12,7 @@ import site.gr8.mattis.creatingminecraft.window.FrameBufferSizeCallback;
 
 public class Camera {
 
-    private static final Logger LOGGER = Logger.get();
-
+    Logger LOGGER = Logger.get();
     Settings settings = Settings.get();
     AdditionalSettings ad = AdditionalSettings.get();
 
@@ -26,8 +25,24 @@ public class Camera {
     private final float Z_NEAR = Float.parseFloat(ad.getProperty("Z_NEAR"));
     private final float Z_FAR = Float.parseFloat(ad.getProperty("Z_FAR"));
     private final float sensitivity = Float.parseFloat(settings.getProperty("sensitivity"));
+    float playerSpeed = 0.05f;
 
-    private static final float PI = 3.141592653589f;
+    public void move() {
+        updateMouse();
+
+        if (Input.isKeyDown(GLFW.GLFW_KEY_W))
+            moveForwardOrBack(true);
+        if (Input.isKeyDown(GLFW.GLFW_KEY_D))
+            moveRightOrLeft(false);
+        if (Input.isKeyDown(GLFW.GLFW_KEY_A))
+            moveRightOrLeft(true);
+        if (Input.isKeyDown(GLFW.GLFW_KEY_S))
+            moveForwardOrBack(false);
+        if (Input.isKeyDown(GLFW.GLFW_KEY_Q))
+            position.y -= playerSpeed;
+        if (Input.isKeyDown(GLFW.GLFW_KEY_E))
+            position.y += playerSpeed;
+    }
 
     public void updateMouse() {
         int dx = Input.getMouseDX();
@@ -36,7 +51,7 @@ public class Camera {
         yaw += dx * sensitivity;
 
         if (pitch > 89.0f)
-            pitch =  89.0f;
+            pitch = 89.0f;
         if (pitch < -89.0f)
             pitch = -89.0f;
 
@@ -44,25 +59,30 @@ public class Camera {
             yaw = 0.0f;
         if (yaw < 0)
             yaw = 360.0f;
-
-        LOGGER.info(pitch + "   " + yaw);
     }
 
-    public void move() {
-        updateMouse();
-        float playerSpeed = 0.05f;
-        if (Input.isKeyDown(GLFW.GLFW_KEY_W))
-            position.z -= playerSpeed;
-        if (Input.isKeyDown(GLFW.GLFW_KEY_D))
-            position.x += playerSpeed;
-        if (Input.isKeyDown(GLFW.GLFW_KEY_A))
-            position.x -= playerSpeed;
-        if (Input.isKeyDown(GLFW.GLFW_KEY_S))
-            position.z += playerSpeed;
-        if (Input.isKeyDown(GLFW.GLFW_KEY_Q))
-            position.y -= playerSpeed;
-        if (Input.isKeyDown(GLFW.GLFW_KEY_E))
-            position.y += playerSpeed;
+    public void moveForwardOrBack(boolean forward) {
+        float x = Math.sin(Math.toRadians(getYaw())) * playerSpeed;
+        float z = Math.cos(Math.toRadians(getYaw())) * playerSpeed;
+        if (forward) {
+            position.z -= z;
+            position.x += x;
+        } else {
+            position.z += z;
+            position.x -= x;
+        }
+    }
+
+    public void moveRightOrLeft(boolean right) {
+        float z = Math.sin(Math.toRadians(getYaw())) * playerSpeed;
+        float x = Math.cos(Math.toRadians(getYaw())) * playerSpeed;
+        if (right) {
+            position.z -= z;
+            position.x -= x;
+        } else {
+            position.z += z;
+            position.x += x;
+        }
     }
 
     public Matrix4f calculateProjectionMatrix() {
@@ -75,6 +95,7 @@ public class Camera {
         viewMatrix.identity();
         viewMatrix.rotate(Math.toRadians(getPitch()), new Vector3f(1, 0, 0), viewMatrix);
         viewMatrix.rotate(Math.toRadians(getYaw()),   new Vector3f(0, 1, 0), viewMatrix);
+        viewMatrix.rotate(Math.toRadians(getRoll()),  new Vector3f(0, 0, 1), viewMatrix);
         Vector3f cameraPos = getPosition();
         Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         viewMatrix.translate(negativeCameraPos, viewMatrix);

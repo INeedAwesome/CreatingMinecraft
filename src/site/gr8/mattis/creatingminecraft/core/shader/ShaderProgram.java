@@ -51,6 +51,10 @@ public abstract class ShaderProgram {
         }
     }
 
+    protected void loadTexture(int location, int slot) {
+        GL20.glUniform1i(location, slot);
+    }
+
     public void start() {
         GL20.glUseProgram(programID);
     }
