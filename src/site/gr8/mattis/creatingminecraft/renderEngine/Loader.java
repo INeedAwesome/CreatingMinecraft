@@ -1,5 +1,6 @@
 package site.gr8.mattis.creatingminecraft.renderEngine;
 
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -8,7 +9,6 @@ import org.lwjgl.opengl.GL30;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,32 +19,23 @@ public class Loader {
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
 
-    public RawModel loadToVAO(float[] positions, float[] colours, int[] indices, float[] uvs) {
-        int vaoID = createVAO();
-        bindIndicesBuffer(indices);
-        storeDataInAttributeList(0, 3, positions);
-        storeDataInAttributeList(1, 3, colours);
-        storeDataInAttributeList(2, 2, uvs);
-        unbindVAO();
-        return new RawModel(vaoID, indices.length);
-    }
+    public RawModel loadToVAO(float[] positions, float[] colours, int[] indices, float[] uvs, List<Vector3f> verts) {
 
-    private int createVAO() {
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
         GL30.glBindVertexArray(vaoID);
-        LOGGER.info("Created and bound VAO!");
-        return vaoID;
+        bindIndicesBuffer(indices, verts);
+        storeDataInAttributeList(0, 3, positions);
+        storeDataInAttributeList(1, 3, colours);
+        storeDataInAttributeList(2, 2, uvs);
+        return new RawModel(vaoID, indices.length);
     }
 
-    private void bindIndicesBuffer(int[] indices) {
+    private void bindIndicesBuffer(int[] indices, List<Vector3f> verts) {
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
-        IntBuffer buffer = BufferUtils.createIntBuffer(indices.length);
-        buffer.put(indices);
-        buffer.flip();
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STATIC_DRAW);
         LOGGER.info("Bound indices buffer. ");
     }
 
@@ -65,10 +56,6 @@ public class Loader {
         for (int vbo : vbos) {
             GL15.glDeleteBuffers(vbo);
         }
-    }
-
-    private void unbindVAO() {
-        GL30.glBindVertexArray(0);
     }
 
     private FloatBuffer storeDataInFloatBuffer(float[] data) {

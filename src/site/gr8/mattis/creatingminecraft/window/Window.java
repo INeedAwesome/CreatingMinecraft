@@ -9,7 +9,10 @@ import site.gr8.mattis.creatingminecraft.core.input.MouseButtonCallback;
 import site.gr8.mattis.creatingminecraft.core.input.MousePositionCallback;
 import site.gr8.mattis.creatingminecraft.core.input.MouseScrollCallback;
 import site.gr8.mattis.creatingminecraft.core.logger.Logger;
+import site.gr8.mattis.creatingminecraft.core.util.Utils;
 import site.gr8.mattis.creatingminecraft.settings.Settings;
+
+import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 
 
 public class Window {
@@ -52,6 +55,7 @@ public class Window {
 
         LOGGER.info("Creating window!");
         setWindowHints();
+
         boolean isFullscreen = Boolean.parseBoolean(settings.getProperty("fullscreen"));
         fullscreen = isFullscreen;
 
@@ -62,16 +66,17 @@ public class Window {
                 isFullscreen ? GLFW.glfwGetPrimaryMonitor() : 0,
                 0);
 
-        if (!nullCheck())
+        if (Utils.isNull(windowID))
             return;
+
         centerWindow();
         GLFW.glfwMakeContextCurrent(windowID);
         GL.createCapabilities();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL_MULTISAMPLE);
         initializeCallbacks(windowID);
-        GLFW.glfwShowWindow(windowID);
 
         if (Boolean.parseBoolean(settings.getProperty("vsync")))
             GLFW.glfwSwapInterval(1);
@@ -97,6 +102,9 @@ public class Window {
         GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 2);
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
         GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
+        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
+        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
+
     }
 
     private static void initializeCallbacks(long windowID) {
@@ -105,15 +113,6 @@ public class Window {
         GLFW.glfwSetMouseButtonCallback(windowID, new MouseButtonCallback());
         GLFW.glfwSetScrollCallback(windowID, new MouseScrollCallback());
         GLFW.glfwSetFramebufferSizeCallback(windowID, new FrameBufferSizeCallback());
-    }
-
-    private static boolean nullCheck() {
-        if (windowID == 0) {
-            LOGGER.error("Failed to create window.");
-            GLFW.glfwTerminate();
-            return false;
-        }
-        return true;
     }
 
     public static void toggleFullscreen() {
@@ -132,5 +131,10 @@ public class Window {
 
     public static boolean isFullscreen() {
         return fullscreen;
+    }
+
+    public void showWindow() {
+        GLFW.glfwShowWindow(windowID);
+        LOGGER.info("Showing window.");
     }
 }

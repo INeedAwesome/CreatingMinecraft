@@ -32,7 +32,7 @@ public abstract class ShaderProgram {
         GL20.glValidateProgram(programID);
         bindAttributes();
         getAllUniformLocations();
-        LOGGER.info("Shader created and bound!");
+        LOGGER.info("Shader created and bound! ID: " + programID);
     }
 
     protected abstract void getAllUniformLocations();
