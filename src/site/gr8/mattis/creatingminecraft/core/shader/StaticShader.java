@@ -1,6 +1,7 @@
 package site.gr8.mattis.creatingminecraft.core.shader;
 
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL20;
 
 public class StaticShader extends ShaderProgram {
 
@@ -29,16 +30,24 @@ public class StaticShader extends ShaderProgram {
         super.bindAttribute(2, "texcoord");
     }
 
-    public void loadTransformationMatrix(Matrix4f matrix) {
-        super.loadMatrix(location_projectionMatrix, matrix);
+    public void loadUniform(String location, Matrix4f matrix) {
+        int uloc = super.getUniformLocation(location);
+        loadMatrix(uloc, matrix);
     }
 
-    public void loadViewMatrix(Matrix4f viewMatrix) {
-        super.loadMatrix(location_viewMatrix, viewMatrix);
+    public void loadUniform(String location, int val) {
+        int uloc = super.getUniformLocation(location);
+        GL20.glUniform1i(uloc, val);
     }
 
-    public void loadTexture(int slot) {
-        super.loadTexture(location_texture, slot);
+    public void loadUniform(String location, boolean val) {
+        int uloc = super.getUniformLocation(location);
+        GL20.glUniform1i(uloc, val ? 1 : 0);
+    }
+
+    public void loadUniform(String location, float val) {
+        int uloc = super.getUniformLocation(location);
+        GL20.glUniform1f(uloc, val);
     }
 
 }

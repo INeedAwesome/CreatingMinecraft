@@ -25,23 +25,23 @@ public class Camera {
     private final float Z_NEAR = Float.parseFloat(ad.getProperty("Z_NEAR"));
     private final float Z_FAR = Float.parseFloat(ad.getProperty("Z_FAR"));
     private final float sensitivity = Float.parseFloat(settings.getProperty("sensitivity"));
-    float playerSpeed = 0.05f;
+    float playerSpeed = 5f;
 
-    public void move() {
+    public void move(float delta) {
         updateMouse();
 
         if (Input.isKeyDown(GLFW.GLFW_KEY_W))
-            moveForwardOrBack(true);
+            moveForwardOrBack(true, delta);
         if (Input.isKeyDown(GLFW.GLFW_KEY_D))
-            moveRightOrLeft(false);
+            moveRightOrLeft(false, delta);
         if (Input.isKeyDown(GLFW.GLFW_KEY_A))
-            moveRightOrLeft(true);
+            moveRightOrLeft(true, delta);
         if (Input.isKeyDown(GLFW.GLFW_KEY_S))
-            moveForwardOrBack(false);
+            moveForwardOrBack(false, delta);
         if (Input.isKeyDown(GLFW.GLFW_KEY_Q))
-            position.y -= playerSpeed;
+            position.y -= playerSpeed * delta;
         if (Input.isKeyDown(GLFW.GLFW_KEY_E))
-            position.y += playerSpeed;
+            position.y += playerSpeed * delta;
     }
 
     public void updateMouse() {
@@ -61,21 +61,25 @@ public class Camera {
             yaw = 360.0f;
     }
 
-    public void moveForwardOrBack(boolean forward) {
-        float x = Math.sin(Math.toRadians(getYaw())) * playerSpeed;
-        float z = Math.cos(Math.toRadians(getYaw())) * playerSpeed;
+    public void moveForwardOrBack(boolean forward, float delta) {
+        float x = Math.sin(Math.toRadians(getYaw())) * playerSpeed * delta;
+        float z = Math.cos(Math.toRadians(getYaw())) * playerSpeed * delta;
+        float y = Math.tan(Math.toRadians(getPitch())) * playerSpeed * delta;
+        if (y > 0.15f) y = 0.15f;
+        if (y < -0.15f) y = -0.15f;
         if (forward) {
             position.z -= z;
             position.x += x;
+            position.y -= y;
         } else {
             position.z += z;
             position.x -= x;
         }
     }
 
-    public void moveRightOrLeft(boolean right) {
-        float z = Math.sin(Math.toRadians(getYaw())) * playerSpeed;
-        float x = Math.cos(Math.toRadians(getYaw())) * playerSpeed;
+    public void moveRightOrLeft(boolean right, float delta) {
+        float z = Math.sin(Math.toRadians(getYaw())) * playerSpeed * delta;
+        float x = Math.cos(Math.toRadians(getYaw())) * playerSpeed * delta;
         if (right) {
             position.z -= z;
             position.x -= x;

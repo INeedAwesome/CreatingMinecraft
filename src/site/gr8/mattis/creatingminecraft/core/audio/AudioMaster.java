@@ -53,7 +53,6 @@ public class AudioMaster {
     public static void setOrientation(Vector3f vector) {
         AL10.alListener3f(AL10.AL_ORIENTATION, vector.x, vector.y, vector.z);
     }
-
     public static int loadSound(String file) {
         int buffer = AL10.alGenBuffers();
         buffers.add(buffer);
