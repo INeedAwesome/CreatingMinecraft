@@ -64,13 +64,9 @@ public class Camera {
     public void moveForwardOrBack(boolean forward, float delta) {
         float x = Math.sin(Math.toRadians(getYaw())) * playerSpeed * delta;
         float z = Math.cos(Math.toRadians(getYaw())) * playerSpeed * delta;
-        float y = Math.tan(Math.toRadians(getPitch())) * playerSpeed * delta;
-        if (y > 0.15f) y = 0.15f;
-        if (y < -0.15f) y = -0.15f;
         if (forward) {
             position.z -= z;
             position.x += x;
-            position.y -= y;
         } else {
             position.z += z;
             position.x -= x;

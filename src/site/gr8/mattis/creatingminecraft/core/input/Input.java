@@ -8,6 +8,8 @@ public class Input {
     public static final int MOUSE_SIDE_BACK = 3;
     public static final int MOUSE_SIDE_FORWARD = 4;
 
+    private static boolean usingJoystick = false;
+
     public static boolean isKeyDown(int keycode) {
         return KeyboardInputCallback.isKeyDown(keycode);
     }
@@ -38,5 +40,13 @@ public class Input {
 
     public static int getMouseYPixel() {
         return MousePositionCallback.getRawY();
+    }
+
+    public static boolean isUsingJoystick() {
+        return usingJoystick;
+    }
+
+    public static void setUsingJoystick(boolean usingJoystick) {
+        Input.usingJoystick = usingJoystick;
     }
 }

@@ -1,6 +1,5 @@
 package site.gr8.mattis.creatingminecraft.renderEngine;
 
-import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -19,19 +18,19 @@ public class Loader {
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
 
-    public RawModel loadToVAO(float[] positions, float[] colours, int[] indices, float[] uvs, List<Vector3f> verts) {
+    public RawModel loadToVAO(float[] positions, float[] colours, int[] indices, float[] uvs) {
 
         int vaoID = GL30.glGenVertexArrays();
         vaos.add(vaoID);
         GL30.glBindVertexArray(vaoID);
-        bindIndicesBuffer(indices, verts);
+        bindIndicesBuffer(indices);
         storeDataInAttributeList(0, 3, positions);
         storeDataInAttributeList(1, 3, colours);
         storeDataInAttributeList(2, 2, uvs);
         return new RawModel(vaoID, indices.length);
     }
 
-    private void bindIndicesBuffer(int[] indices, List<Vector3f> verts) {
+    private void bindIndicesBuffer(int[] indices) {
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
@@ -42,9 +41,10 @@ public class Loader {
     private void storeDataInAttributeList(int attributeNumber, int size, float[] data) {
         int vboID = GL15.glGenBuffers();
         vbos.add(vboID);
+        System.out.println(vboID);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
         FloatBuffer buffer = storeDataInFloatBuffer(data);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_DYNAMIC_DRAW);
         GL20.glVertexAttribPointer(attributeNumber, size, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }

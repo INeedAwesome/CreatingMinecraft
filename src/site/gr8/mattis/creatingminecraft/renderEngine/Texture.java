@@ -36,7 +36,7 @@ public class Texture {
         GL11.glTexImage2D(
                 GL11.GL_TEXTURE_2D,
                 0,
-                GL11.GL_RGBA,
+                GL11.GL_RGBA8,
                 w.get(0),
                 h.get(0),
                 0,

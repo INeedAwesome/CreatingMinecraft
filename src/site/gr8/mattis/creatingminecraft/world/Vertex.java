@@ -5,7 +5,8 @@ import org.joml.Vector3f;
 
 public class Vertex {
 
-    Vector3f position;
-    Vector2f uv;
+    public Vector3f position;
+    public Vector2f texCoords;
+    public int texID;
 
 }

@@ -1,3 +1,27 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2022 Mattis Kjellerås
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package site.gr8.mattis.creatingminecraft;
 
 import org.joml.Vector3f;
@@ -15,9 +39,6 @@ import site.gr8.mattis.creatingminecraft.settings.Settings;
 import site.gr8.mattis.creatingminecraft.window.Window;
 import site.gr8.mattis.creatingminecraft.world.Block;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main {
 
     private static final Logger LOGGER = Logger.get();
@@ -28,12 +49,10 @@ public class Main {
     private static StaticShader shader;
     private static Loader loader;
 
-    private static int sound;
-
     private static boolean wireFrame = false;
     private static boolean mouseBound = true;
     private static boolean running = true;
-    private static boolean usingInternalServer;
+    private static int sound;
 
     public static void main(String[] args) {
         settings.init();
@@ -55,35 +74,25 @@ public class Main {
         Renderer renderer = new Renderer();
         shader = new StaticShader();
 
-        List<Vector3f> verts = new ArrayList<>();
-        verts.add(new Vector3f(-0.5f, 0.5f, 0.5f));
-        verts.add(new Vector3f(-0.5f, -0.5f, 0.5f));
-        verts.add(new Vector3f(0.5f, -0.5f, 0.5f));
-        verts.add(new Vector3f(0.5f, 0.5f, 0.5f));
-        verts.add(new Vector3f(-0.5f, 0.5f, -0.5f));
-        verts.add(new Vector3f(0.5f, 0.5f, -0.5f));
-        verts.add(new Vector3f(-0.5f, -0.5f, -0.5f)); // testing
-
         Block block = new Block();
-        float[] vertices = block.vertices;
-        int[]   indices =  block.indices;
-        float[] colours =  block.colours;
-        float[] uvs =      block.uvs;
-        RawModel model = loader.loadToVAO(vertices, colours, indices, uvs, verts);
-
+        int[] indices = block.indices;
+        float[] colours = block.colours;
+        float[] uvs = block.uvs;
+        float[] ve = Block.returnNewVertices(1, 1, 1);
+        RawModel model = loader.loadToVAO(ve, colours, indices, uvs);
 
         Camera camera = new Camera();
         camera.setPosition(new Vector3f(0, 0, 1));
 
         Texture texture = new Texture();
-        texture.genTexture("resources/textures/blocks/grass_block_side.png");
+        texture.genTexture("resources/textures/blocks/blocks.png");
+
+        window.showWindow();
+        GLFW.glfwSetInputMode(Window.getWindowID(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 
         double frame_cap = 1.0 / Double.parseDouble(settings.getProperty("fps"));
         double time = (double) System.nanoTime() / (double) 1_000_000_000L;
         double unprocessed = 0;
-
-        window.showWindow();
-        GLFW.glfwSetInputMode(Window.getWindowID(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_DISABLED);
 
         LOGGER.info("Initializing game loop!");
         while (!GLX.shouldClose() && running) {
@@ -104,7 +113,8 @@ public class Main {
             if (canRender) { // rendering stuff
                 GLX.prepare();
                 shader.start();
-                renderer.render(model, shader, camera, texture, verts);
+                renderer.render(model, shader, camera, texture);
+                //LOGGER.info((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024  + "KB"); // / 1024 + "MB");
                 shader.stop();
                 GLX.flipFrame();
             }
@@ -121,17 +131,14 @@ public class Main {
     }
 
     public static void handleInput() {
-
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_F11))
-            Window.toggleFullscreen();
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_F1))
-            if (!wireFrame) {
-                wireFrame = true;
-                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-            } else {
-                wireFrame = false;
-                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-            }
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_F11)) Window.toggleFullscreen();
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_F1)) if (!wireFrame) {
+            wireFrame = true;
+            GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+        } else {
+            wireFrame = false;
+            GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+        }
         if (Input.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
             if (mouseBound) {
                 GLFW.glfwSetInputMode(Window.getWindowID(), GLFW.GLFW_CURSOR, GLFW.GLFW_CURSOR_NORMAL);
@@ -141,8 +148,7 @@ public class Main {
                 mouseBound = true;
             }
         }
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE))
-            running = false;
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) running = false;
         if (Input.isKeyPressed(GLFW.GLFW_KEY_9)) {
             soundBuffer.play(sound);
         }
