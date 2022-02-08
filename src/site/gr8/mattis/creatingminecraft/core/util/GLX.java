@@ -15,7 +15,7 @@ public class GLX {
     }
 
     public static void prepare() {
-        GL11.glClearColor(255.0f / 250.0f, 119.0f / 250.0f, 100.0f / 255.0f, 1f);
+        GL11.glClearColor(23f / 250.0f, 23f / 250.0f,  23f / 255.0f, 1f);
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     }
 

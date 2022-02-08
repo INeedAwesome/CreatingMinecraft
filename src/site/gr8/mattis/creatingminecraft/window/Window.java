@@ -135,6 +135,5 @@ public class Window {
 
     public void showWindow() {
         GLFW.glfwShowWindow(windowID);
-        LOGGER.info("Showing window.");
     }
 }

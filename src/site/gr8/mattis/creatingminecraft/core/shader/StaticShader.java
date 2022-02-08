@@ -5,8 +5,8 @@ import org.lwjgl.opengl.GL20;
 
 public class StaticShader extends ShaderProgram {
 
-    private static final String VERTEX_FILE = "resources/shaders/vertexShader.txt";
-    private static final String FRAGMENT_FILE = "resources/shaders/fragmentShader.txt";
+    private static final String VERTEX_FILE = "resources/shaders/vertexShader.glsl";
+    private static final String FRAGMENT_FILE = "resources/shaders/fragmentShader.glsl";
 
     private int location_projectionMatrix;
     private int location_viewMatrix;
